@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   root 'products#list'
 
+  get '/products/:id', to: 'products#show', as: 'product'
   post 'call' => 'twilio#call'
   post 'connect' => 'twilio#connect'
 

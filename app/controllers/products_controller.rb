@@ -15,33 +15,9 @@ class ProductsController < ApplicationController
     render 'index'
   end
 
-  # Hande a POST from our web form and connect a call via REST API
-  def call
-    contact = Contact.new
-    contact.phone = params[:phone]
-   
-    # Validate contact
-    if contact.valid?
-
-      @client = Twilio::REST::Client.new @@twilio_sid, @@twilio_token
-      # Connect an outbound call to the number submitted
-      @call = @client.account.calls.create(
-        :from => @@twilio_number,
-        :to => contact.phone,
-        :url => "#{root_url}connect" # Fetch instructions from this URL when the call connects
-      )
-
-      # Lets respond to the ajax call with some positive reinforcement
-      @msg = { :message => 'Phone call incoming!', :status => 'ok' }
-
-    else
-
-      # Oops there was an error, lets return the validation errors
-      @msg = { :message => contact.errors.full_messages, :status => 'ok' }
-    end
-    respond_to do |format|
-      format.json { render :json => @msg }
-    end
+  # Render the product detail view
+  def show
+    @product = Tatooine::Starship.get(params[:id])
   end
 
   # This URL contains instructions for the call that is connected with a lead
