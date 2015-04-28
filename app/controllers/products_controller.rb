@@ -2,16 +2,18 @@ require 'twilio-ruby'
 require 'tatooine'
 
 class ProductsController < ApplicationController
+  include GenerateToken
 
   # Define our Twilio credentials as instance variables for later use
   @@twilio_sid = ENV['TWILIO_ACCOUNT_SID']
-  @@twilio_token = ENV['TWILIO_AUTH_TOKEN']
+  @@auth_token = ENV['TWILIO_AUTH_TOKEN']
   @@twilio_number = ENV['TWILIO_NUMBER']
 
   # Render product list
   def list
     @products = Tatooine::Starship.list
     @products.concat Tatooine::Starship.next
+    @token = generate_token 'customer'
     render 'index'
   end
 
@@ -32,5 +34,7 @@ class ProductsController < ApplicationController
     end
     render text: response.text
   end
+
+
 
 end
