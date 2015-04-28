@@ -2,16 +2,17 @@ class SupportController < ApplicationController
   include GenerateToken
 
   def create
-    puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-    puts params
     @ticket = SupportTicket.new(support_params)
-    puts @ticket.endpoint
     
     if @ticket.save
       return head(:ok)
     else
       return head(:bad_request)
     end
+  end
+
+  def list
+    @tickets = SupportTicket.all()
   end
 
   def delete

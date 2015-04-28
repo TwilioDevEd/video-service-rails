@@ -1,2 +1,16 @@
-<h1>Support#show</h1>
-<p>Find me in app/views/support/show.html.erb</p>
+<h1>Requests for Video Support</h1>
+<table class="table table-hover">
+  <tr>
+    <th>ID</th>
+    <th>Page</th>
+    <th>Date Created</th>
+  </tr>
+  <tbody>
+    <% @tickets.each do |ticket| %>
+      <tr><%= ticket.id %></tr>
+      <tr><%= ticket.product_id %></tr>
+      <tr><%= ticket.created_at %></tr>
+      <tr><a class="btn-block btn btn-success" data-endpoint="<%= ticket.endpoint %>" href="#" >See Details</a></tr>
+  </tbody>
+  
+</table>
