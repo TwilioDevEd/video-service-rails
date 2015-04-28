@@ -1,11 +1,6 @@
 require 'twilio-ruby'
 
 class TwilioController < ApplicationController
-  # Before we allow the incoming request to connect, verify
-  # that it is a Twilio request
-  before_filter :authenticate_twilio_request, :only => [
-    :connect
-  ]
 
   # Define our Twilio credentials as instance variables for later use
   @@twilio_sid = ENV['TWILIO_ACCOUNT_SID']
@@ -57,30 +52,6 @@ class TwilioController < ApplicationController
       r.Say 'If this were a real click to call implementation, you would be connected to an agent at this point.', :voice => 'alice'
     end
     render text: response.text
-  end
-
-
-  # Authenticate that all requests to our public-facing TwiML pages are
-  # coming from Twilio. Adapted from the example at 
-  # http://twilio-ruby.readthedocs.org/en/latest/usage/validation.html
-  # Read more on Twilio Security at https://www.twilio.com/docs/security
-  private
-  def authenticate_twilio_request
-    twilio_signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
-
-    # Helper from twilio-ruby to validate requests. 
-    @validator = Twilio::Util::RequestValidator.new(@@twilio_token)
- 
-    # the POST variables attached to the request (eg "From", "To")
-    # Twilio requests only accept lowercase letters. So scrub here:
-    post_vars = params.reject {|k, v| k.downcase == k}
- 
-    is_twilio_req = @validator.validate(request.url, post_vars, twilio_signature)
- 
-    unless is_twilio_req
-      render :xml => (Twilio::TwiML::Response.new {|r| r.Hangup}).text, :status => :unauthorized
-      false
-    end
   end
 
 end

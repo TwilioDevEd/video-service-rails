@@ -1,6 +1,6 @@
 {
-  "name": "Click To Call: Twilio & Rails",
-  "description": "An example of implementing click to call functionality in a Rails application",
+  "name": "Video Customer Service: Twilio & Ruby on Rails",
+  "description": "An example of implementing video customer service feature in a Rails application",
   "keywords": [
     "Ruby",
     "API",
@@ -8,13 +8,13 @@
     "Rails",
     "RoR",
     "Tutorial",
-    "Telephone API",
-    "Voice API",
+    "Video API",
+    "WebRTC",
     "REST API",
     "Demo"
   ],
-  "website": "https://twilio.com/docs/howto/click-to-call-walkthrough",
-  "repository": "https://github.com/TwilioDevEd/clicktocall-rails",
+  "website": "https://twilio.com/docs/howto/walkthrough/video-service/",
+  "repository": "https://github.com/TwilioDevEd/video-service-rails",
   "logo": "https://s3-us-west-2.amazonaws.com/deved/twilio-logo.png",
   "success_url": "/landing.html",
   "env": {
