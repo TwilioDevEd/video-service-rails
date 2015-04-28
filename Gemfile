@@ -17,8 +17,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'phony_rails'
 # Twilio REST API. 
 gem 'twilio-ruby'
-
-
+# Star Wars API from Phil Nash. https://github.com/philnash/tatooine
+gem 'tatooine'
 group :development, :test do
   gem 'sqlite3'
 end

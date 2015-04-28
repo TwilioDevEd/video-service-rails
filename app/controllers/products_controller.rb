@@ -1,15 +1,18 @@
 require 'twilio-ruby'
+require 'tatooine'
 
-class TwilioController < ApplicationController
+class ProductsController < ApplicationController
 
   # Define our Twilio credentials as instance variables for later use
   @@twilio_sid = ENV['TWILIO_ACCOUNT_SID']
   @@twilio_token = ENV['TWILIO_AUTH_TOKEN']
   @@twilio_number = ENV['TWILIO_NUMBER']
 
-  # Render home page
-  def index
-  	render 'index'
+  # Render product list
+  def list
+    @products = Tatooine::Starship.list
+    @products.concat Tatooine::Starship.next
+    render 'index'
   end
 
   # Hande a POST from our web form and connect a call via REST API
