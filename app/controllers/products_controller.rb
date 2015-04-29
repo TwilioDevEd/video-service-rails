@@ -21,8 +21,9 @@ class ProductsController < ApplicationController
 
     # Let's create a customer capability token before we view any products
     def create_token
-      # TODO generate a random endpoint string
-      @token = generate_token 'customer'
+      # Generate a random endpoint for the customer
+      endpoint = (0...13).map { ('a'..'z').to_a[rand(26)] }.join
+      @token = generate_token endpoint
     end
 
 

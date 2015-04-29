@@ -4,11 +4,12 @@ var myEndpoint,
     supportConversation;
 // Create an endpoint to add to the conversation
 function createEndpoint() {
+    // Create a deferred object to use jQuery promise
     var deferred = new $.Deferred();
+
     new Twilio.Endpoint.createWithToken(capabilityToken).then(function(endpoint) {
         // keep a reference for making outbound calls later
         myEndpoint = endpoint;
-        console.log(myEndpoint);
 
         // automatically answer any incoming calls
         myEndpoint.on('invite', function(invite) {
