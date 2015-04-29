@@ -1,30 +1,51 @@
 $gray: #222;
-.support-prompt {
+
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -ms-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
+}
+
+.support-widget {
   display: block;
   background:$gray;
-  color:white;
   width: 200px;
   position: fixed;
   bottom: 0px;
   right: 0px;
-  padding: 20px;
+  color:white;
   border-radius:6px 0px 0px 0px;
+  .support-prompt {
+    z-index: 2;
+    padding: 20px;
+  }
 }
 p.video-label {
   text-align: center;
 }
 .video-streams {
-  display:none;
+  @include transition(all, 0.2s, linear);
+  position:absolute;
+  padding:10px;
+  background:$gray;
+  left:100%;
+  bottom:0px;
+  border-radius: 6px 0px 0px 0px;
+
   &.active {
     display: block;
+    left:0px;
   }
   video {
     border: 1px solid black;
-    margin: 1em 1em 0 0;
-    height: 200px;
-    width: 200px;
-    background:black;
-    &:before {
+    margin: 1em 0 0;
+    height: 180px;
+    width: 180px;
+    background: black;
+    border-radius: 6px;
+    &:after {
       content: "Waiting for connection...";
       text-align: center;
       position:absolute;

@@ -43,22 +43,24 @@
 
     <div class="container">
       <%= yield %>
-    </div> <!-- /container -->
-    <div class="support-prompt">
-      <h2>Questions?</h2> 
-      <p>Talk to a sales rep now</p>
-      <a class="btn-block btn btn-primary request-support" href="#">Request Support</a>
-      <small class="support-status"></small>
     </div>
-    <div class="video-streams">
-      <div class="local-video-label"></div>
-      <div class="remote-video-label"></div>
-      <video id="my-video"></video>
-      <video id="remote-video"></video>
-      <div class="controls">
-        <a class="btn btn-default">Mute</a>
-        <a class="btn btn-danger">End Call</a>
+
+    <!-- Video Support Widget -->
+    <div class="support-widget">
+      <%= yield :prompt %>
+
+      <!-- Video container and controls -->
+      <div class="video-streams">
+        <div class="controls btn-group btn-group-justified btn-group-xs" role="group" aria-label="...">
+          <a class="btn btn-default mute-video" href="#">Mute</a>
+          <a class="btn btn-default mute-video" href="#" style="display:none">Unmute</a>
+          <a class="btn btn-danger end-video" href="#">End Call</a>
+        </div>
+        <video id="my-video"></video>
+        <video id="remote-video"></video>
+        
       </div>
+
     </div>
   </body>
   <script charset="utf-8">

@@ -1,6 +1,7 @@
 // Execute JavaScript on page load
 
-var myEndpoint;
+var myEndpoint,
+    supportConversation;
 // Create an endpoint to add to the conversation
 function createEndpoint() {
     var deferred = new $.Deferred();
@@ -59,6 +60,10 @@ function deleteSupportTicket(ticketId) {
 function showVideoStreams(conversation) {
     // show local video
     var localVideoElement = $('#my-video').get(0);
+
+    // create a localStream object to mute and end
+    supportConversation = conversation;
+
     conversation.localStream.attach(localVideoElement);
     // show local address
     $('.local-video-label').html(myEndpoint.address);
@@ -94,16 +99,39 @@ function callCustomer(customerEndpoint, ticketId) {
     })
 };
 
+function muteStream() {
+    supportConversation.localStream.muted = !supportConversation.localStream.muted;
+
+}
+
+function endStream() {
+    supportConversation.leave();
+    // show the video area and streams
+    $('.video-streams').removeClass('active');
+}
+
 
 $(function() {
     $('.request-support').click(function(e) {
         e.preventDefault();
         createTicket();
     });
+
     $('.connect-call').click(function(e) {
         e.preventDefault();
         customerEndpoint = $(e.currentTarget).data('endpoint');
         ticketId = $(e.currentTarget).data('ticket');
         callCustomer(customerEndpoint, ticketId);
-    })
+    });
+
+    $('.mute-video').click(function(e) {
+        e.preventDefault();
+        $('.mute-video').toggle();
+        muteStream();
+    });
+
+    $('.end-video').click(function(e) {
+        e.preventDefault();
+        endStream();
+    });
 });

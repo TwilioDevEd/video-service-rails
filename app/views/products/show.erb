@@ -6,3 +6,14 @@
     <p>Total Crew: <%= @product.crew %></p>
   </div>
 </div>
+
+<% content_for :prompt do %>
+  <!-- Prompt for user -->
+  <div class="support-prompt">
+    <h2>Questions?</h2> 
+    <p>Talk to a sales rep now</p>
+    <a class="btn-block btn btn-primary request-support" href="#">Request Support</a>
+    <small class="support-status"></small>
+  </div>
+  
+<% end %>
