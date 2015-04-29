@@ -1,0 +1,82 @@
+.step(data-title='Introduction')
+  :markdown
+    ## How It Works
+
+    Ready to implement video customer support? Here's how it works at a high level:
+
+      1. A user visits a product page and requests support
+      1. An agent at her terminal initiates a video call with the customer
+      1. The user accepts the incoming call and is immediately connected to a live agent in the browser.
+
+    ## Building Blocks
+
+    Here are the technologies we'll use to get this done:
+
+    * [Ruby on Rails](http://rubyonrails.org/) to create a database-driven web application
+    * [Twilio Video SDK](/video/request-early-access) (limited beta) a javascript library for real-time video
+    * [Twilio Tokens](/docs/api/rest/token) from Twilio's REST API to generate a capability token
+
+    ## How To Read This Tutorial
+
+    To implement video customer support, we will be working through a series of [user stories](http://en.wikipedia.org/wiki/User_story) that describe how to fully implement video support in a web application. We'll walk through the code required to satisfy each story, and explore what we needed to add at each step.
+
+    Let's get started! Click the right arrow to move on to the next step of the tutorial.
+
+.step(data-title='The User Story')
+  h2 Customer Support
+  blockquote 
+    | As a user, I want to click a button on a product page to request live video support.
+  :markdown
+    This story requires that we create a bit of UI and a model object to create and save a new `SupportTicket` in our system. At a high level, here's what we will need to add:
+
+    * A button to initiate the support interaction
+    * A route and controller function on the server that will create a support ticket for the user.
+    * Some javascript that will make an ajax call to our `support/create` route.
+    * A persistent `SupportTicket` model object to store information about the support request
+
+    Let's start by looking at the model, where we decide what information we want to store with the ticket.
+
+.step(data-title='Creating a SupportTicket', data-file='db/schema.rb')
+  :markdown
+    ## Creating a Support Ticket
+
+    We begin by generating an [Active Record](http://guides.rubyonrails.org/active_record_basics.html) model that we will store in a postgres database. For our purposes we don't need to store very much information about the support ticket - just some information about where to call the customer (we'll talk about `Endpoints` soon) and some context about where they are calling from.
+
+    We'll use the [Rails generate command](http://guides.rubyonrails.org/command_line.html#rails-generate) to create our model:
+    ``` bin/rails generate model SupportTicket endpoint:string product_id:string ```
+
+    This generator creates our model, migration and schema for us. Now all we need to run is `rake db:migrate` and we have a table of SupportTickets.
+
+    Now that we have a model object to save a ticket, let's move up to the controller level to see how we create one.
+
+.step(data-title='Creating a Route', data-file='config/routes.rb')
+  :markdown
+    ## Creating our Route
+
+    In Rails we often generate our routes, but this time we'll define the few we have by hand. Notice our support routes, which all point to controller functions. In this case we will call support/create in javascript.
+
+    We will find the `create` method in our `SupportController`.
+
+.step(data-title='The Support Controller', data-file='app/controllers/support_controller.rb', data-highlight='')
+  :markdown
+    ## The Support Controller
+
+    This controller is responsible for handling all of the interactions we'll want to make with our Support Ticket system. 
+
+    This should feel pretty similar to a Rails-generated controller, in fact it is very similar. However, since we know what method these routes will always be called, and in what format (javascript) we can simply return headers instead of templates.
+
+    Before we move on to discuss how Video works, let's peek at the javascript that creates the support ticket. 
+
+.step(data-title='Creating a Support Ticket', data-file='app/assets/javascripts/app.js', data-highlight="33-43")
+  :markdown
+    ## Creating a Support Ticket
+
+    So far we have created a route `/support/create` which points to the `create` function inside of the SupportController. Now let's tie it all together.
+
+    Some of this code may look unfamiliar to you, specifically `createEndpoint()` but rest assured you will have a wealth of knowledge around Endpoints when we're done-- for now you just need to know that it is at this point that we create an Endpoint for the user.
+
+    Inside the [.done()](//api.jquery.com/deferred.done/) callback we simply make an ajax POST request to '/support/create' with the page url as context, and an address that we can reach the user at later in our video call.
+
+    Once the SupportTicket is created an agent will see it at `/support/list` which is a list of open support tickets. From here the agent will be able to click a button and initiate a video call.
+
+    Awesome, it's probably time to talk about these Endpoints and how to make a Twilio Video call.

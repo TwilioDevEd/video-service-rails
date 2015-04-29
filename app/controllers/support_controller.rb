@@ -24,10 +24,6 @@ class SupportController < ApplicationController
     return head(:no_content)
   end
 
-  def show
-    
-  end
-
   private
 
     # Never trust parameters from the scary internet, only allow the white list through.

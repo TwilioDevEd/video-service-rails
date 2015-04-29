@@ -1,5 +1,4 @@
-// Execute JavaScript on page load
-
+// Stash some objects in the global scope
 var myEndpoint,
     supportConversation;
 // Create an endpoint to add to the conversation
@@ -59,23 +58,20 @@ function deleteSupportTicket(ticketId) {
 
 // incoming or outgoing, display streams on screen
 function showVideoStreams(conversation) {
-    // show local video
-    var localVideoElement = $('#my-video').get(0);
+    // define our video containers
+    var localVideoElement = $('#local-video').get(0);
+    var remoteVideoElement = $('#remote-video').get(0);
 
     // create a localStream object to mute and end
     supportConversation = conversation;
 
+    // attach our local Stream
     conversation.localStream.attach(localVideoElement);
-    // show local address
-    $('.local-video-label').html(myEndpoint.address);
 
     conversation.on('participantJoined', function(participant) {
-        // show participant video
-        var remoteVideoElement = $('#remote-video').get(0);
+        
+        // attach the remote Stream
         participant.stream.attach(remoteVideoElement);
-
-        // show participant address
-        $('.remote-video-label').html(participant.address);
     })
 };
 
@@ -100,11 +96,12 @@ function callCustomer(customerEndpoint, ticketId) {
     })
 };
 
+// Mute the local video
 function muteStream() {
     supportConversation.localStream.muted = !supportConversation.localStream.muted;
-
 }
 
+// End the video call
 function endStream() {
     supportConversation.leave();
     // show the video area and streams

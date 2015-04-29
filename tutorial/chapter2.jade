@@ -1,0 +1,134 @@
+.step(data-title='Starting a Video Call', data-file='app/assets/javascripts/app.js')
+  h2 Starting a video support call
+
+  blockquote 
+    | As an agent, I would like to click on a support request to initiate a video conversation with the user.
+  :markdown
+    Time to get to the meat of this use-case. In this section we will build the largest chunk of the functionality, in which a Customer Support agent can initiate a vide call with a specific User chosen from a list of open support tickets. 
+
+    To do this we need to implement:
+
+    * Creating a Capability Token
+    * An Endpoint for the user
+    * An Endpoint for the agent
+    * A Conversation between the two parties
+
+    Let's start by looking at the first piece of the connection, the Capability Token.
+
+.step(data-title='Generating a Capability Token', data-file='app/controllers/concerns/generate_token.rb')
+  :markdown
+    ## Generating a Capability Token
+
+    Capability tokens allow you to add Twilio capabilities to web and mobile applications without exposing your AuthToken in JavaScript or any other client-side environment.
+
+    Generating one using the twilio-ruby library is actually pretty simple. For now, while the Video SDK is in beta, we can fake the `client_outgoing` Account SID, but the `client_incoming` method needs to be passed an Endpoint Address, which can be any string (example: it could be 'customer' or 'agent').
+
+  pre.note One last note about this code is that we need to access it from multiple controllers and on multiple pages, therefore we are putting inside of a Rails [Concern](//api.rubyonrails.org/classes/ActiveSupport/Concern.html) which allows for code to be easily shared across files.
+
+  p Now let's finally talk about Endpoints.
+
+.step(data-title='Creating an Endpoint', data-file='app/assets/javascripts/app.js', data-highlight="1-30")
+  :markdown
+    ## Creating and Endpoint
+
+    What is an Endpoint? Well simply put an Endpoint is one side of a Conversation. It is identified by an address (string) and once it's created it gives us control over the Conversation and therefore the entre Video call.
+
+    In this use-case we will need to create an Endpoint for both the agent and the user. 
+
+      * Create user endpoint: we did this earlier, when the user requested support.
+      * Create agent endpoint: we'll do this next when the Agent initiates a call.
+
+    To create an Endpoint we first need to pass it our capability token. In this case our token is being passed to the front-end by our controller. Let's take a quick detour to look at the front-end.
+
+.step(data-title='The Application Layout', data-file='app/views/layouts/application.html.erb', data-highlight="52-68")
+  :markdown
+    ## The Application Layout
+
+    Our layout, which all other pages render inside of, contains most of the elements for our Video call. 
+
+    ### Video Tags
+
+    In order to display our media streams, we need to make sure that for each video stream we supply the front-end with a `video` element. In this case we have two video tags '#local-video' and '#remote-video'.
+
+    ### Capability Token javascript object
+
+    In order to instatiate our Endpoint we pass the server-generated capability token to the front-end. 
+
+    Okay, now that we have our markup, our token and our Endpoint, let's create a Conversation.
+
+.step(data-title='Starting a Conversation', data-file='app/assets/javascripts/app.js', data-highlight="120-125")
+  :markdown
+    ## Starting a Conversation
+
+    At this point our agent is ready to initiate a call which means we need one very important piece of information, the user's Endpoint address. 
+
+    Luckily, we stored this address in the support ticket, so all we need to do is grab it from the UI. One easy way to store this information is to simply assign a data attribute to it:
+
+    ``` 
+      <a class='connect-call btn-block btn btn-success' data-endpoint="<%= ticket.endpoint %>"
+          data-ticket="<%= ticket.id %>" href="#" >Call customer</a>
+    ```
+
+    We'll also store the `ticket.id` so that we can delete the support ticket once our call is connected.
+
+    Now let's slide up to the function that will call our customer, using our newly acquired address.
+
+.step(data-title='Calling the Customer', data-file='app/assets/javascripts/app.js', data-highlight="81-100")
+  :markdown
+    ## Calling the Customer
+
+    In order to open a two-way connection with the user, our agent device needs to call `myEndpoint.createConversation()` and pass it the address for the customer's Endpoint. 
+
+    This is one major benefit of using the Twilio Video SDK, instead of handling the registration and setup yourself, you can simply call `createConversation()`.
+
+    As soon as this completes we need to inject the video Streams on to the page. 
+
+    Lastly we'll call a function that will delete the support ticket, but before we move on to that we need to talk about video Streams.
+
+
+.step(data-title='Video Streams', data-file='app/assets/javascripts/app.js', data-highlight="59-76")
+  :markdown
+    ## Showing the Video Streams
+
+    A Stream is a wrapper for the MediaStream object and provides us with a high-level API for muting, pausing and attaching to the DOM. 
+
+    In this function what we are doing is attaching our Streams to the video elements we created to display the video.
+
+    Before we can attach the remote video we need to make sure that the remote participant has joined, which we can do by listening for the `participantJoined` event on the Conversation.
+
+    At this point we have two live video streams on the page! The last piece is controlling the video and ending the call. 
+
+.step(data-title='Video Controls', data-file='app/assets/javascripts/app.js', data-highlight="99-109")
+  :markdown
+    ## Video Controls
+
+    The final piece is to create controls for the video. The only two we care about here are muting the local `Stream` and ending the call. You can see here both are simple one-line commands.
+
+    As simple as this bit is, it is what we're most excited about here at Twilio. The ability to make a simple API call on an active Conversation opens up the world of IP-based communications.
+
+    Earlier we saved the global `supportConversation` object which houses our conversation. This gives us a handle into all of the Twilio API. As of this writing all we can do is mute, pause and leave the conversation, but it's not hard to imagine being able to share the screen, record the conversation (video and audio), or even transfer the call to your phone. 
+
+.step(data-title='All Done', data-file='app/assets/javascripts/app.js')
+  :markdown
+    ## All Done
+
+    Wow, that was quite an undertaking, but in reality we had to write very little code to get a real-time video call implemented into our support app.
+
+    We'd also love to hear your feedback on this tutorial - [please reach out to us](mailto:help@twilio.com) with any questions you might have.  Thanks for checking out the tutorial!
+
+  hr
+    
+  h2 Deploy This App
+  p
+  a(href="https://heroku.com/deploy?template=https://github.com/TwilioDevEd/video-service-rails")
+    img(src="//camo.githubusercontent.com/c0824806f5221ebb7d25e559568582dd39dd1170/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e706e67", alt="Deploy", data-canonical-src="https://www.herokucdn.com/deploy/button.png", style="max-width:100%;") 
+
+
+
+
+
+
+
+
+
+

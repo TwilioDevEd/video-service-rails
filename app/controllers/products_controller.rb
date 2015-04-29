@@ -3,7 +3,7 @@ require 'tatooine'
 
 class ProductsController < ApplicationController
   include GenerateToken
-  before_action :create_token, only: [:list, :show]
+  before_action :create_token
 
   # Render product list
   def list
