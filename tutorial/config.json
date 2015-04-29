@@ -1,5 +1,6 @@
 {
     "title": "Video Customer Service",
+    "description": "Video Customer Support enables your support agents to easily connect with your customers using live video. Learn how to implement it in minutes.",
     "repo": "TwilioDevEd/video-service-rails",
     "heroku": true
 }
