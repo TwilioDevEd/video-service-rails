@@ -12,14 +12,20 @@ class SupportController < ApplicationController
   end
 
   def list
+    @token = generate_token 'agent'
     @tickets = SupportTicket.all()
   end
 
-  def delete
+  # DELETE /appointments/1
+  # DELETE /appointments/1.json
+  def destroy
+    @ticket = SupportTicket.find(params[:id])
+    @ticket.destroy
+    return head(:no_content)
   end
 
   def show
-    @token = generate_token 'agent'
+    
   end
 
   private

@@ -37,6 +37,7 @@
     <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js" type="text/javascript"></script>
     <![endif]-->
+    <script src="//media.twiliocdn.com/sdk/conversations/v0.5/js/releases/0.5.0.b1-ecab1be/twilio-conversations.js"></script>
   </head>
   <body>
 
@@ -49,5 +50,18 @@
       <a class="btn-block btn btn-primary request-support" href="#">Request Support</a>
       <small class="support-status"></small>
     </div>
+    <div class="video-streams">
+      <div class="local-video-label"></div>
+      <div class="remote-video-label"></div>
+      <video id="my-video"></video>
+      <video id="remote-video"></video>
+      <div class="controls">
+        <a class="btn btn-default">Mute</a>
+        <a class="btn btn-danger">End Call</a>
+      </div>
+    </div>
   </body>
+  <script charset="utf-8">
+    window.capabilityToken = "<%= @token %>" || "";
+  </script>
 </html>

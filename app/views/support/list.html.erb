@@ -8,11 +8,12 @@
   </tr>
   <tbody>
     <% @tickets.each do |ticket| %>
-      <tr>
+      <tr id="ticket-<%= ticket.id %>">
         <td><%= ticket.id %></td>
         <td><%= ticket.product_id %></td>
         <td><%= ticket.created_at %></td>
-        <td><a class="btn-block btn btn-success" data-endpoint="<%= ticket.endpoint %>" href="#" >See Details</a></td>
+        <td><a class='connect-call btn-block btn btn-success' data-endpoint="<%= ticket.endpoint %>"
+        data-ticket="<%= ticket.id %>" href="#" >Call customer</a></td>
       </tr>
     <% end %>
   </tbody>

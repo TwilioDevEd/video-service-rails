@@ -3,17 +3,12 @@ require 'tatooine'
 
 class ProductsController < ApplicationController
   include GenerateToken
-
-  # Define our Twilio credentials as instance variables for later use
-  @@twilio_sid = ENV['TWILIO_ACCOUNT_SID']
-  @@auth_token = ENV['TWILIO_AUTH_TOKEN']
-  @@twilio_number = ENV['TWILIO_NUMBER']
+  before_action :create_token, only: [:list, :show]
 
   # Render product list
   def list
     @products = Tatooine::Starship.list
     @products.concat Tatooine::Starship.next
-    @token = generate_token 'customer'
     render 'index'
   end
 
@@ -22,18 +17,13 @@ class ProductsController < ApplicationController
     @product = Tatooine::Starship.get(params[:id])
   end
 
-  # This URL contains instructions for the call that is connected with a lead
-  # that is using the web form.  These instructions are used either for a
-  # direct call to our Twilio number (the mobile use case) or 
-  def connect
-    # Our response to this request will be an XML document in the "TwiML"
-    # format. Our Ruby library provides a helper for generating one
-    # of these documents
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say 'If this were a real click to call implementation, you would be connected to an agent at this point.', :voice => 'alice'
+  private
+
+    # Let's create a customer capability token before we view any products
+    def create_token
+      # TODO generate a random endpoint string
+      @token = generate_token 'customer'
     end
-    render text: response.text
-  end
 
 
 

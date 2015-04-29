@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   post 'support/create'
 
-  get 'support/delete'
+  delete '/support/:id' => 'support#destroy'
 
   get 'support/list'
 
