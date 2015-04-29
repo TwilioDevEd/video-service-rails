@@ -110,11 +110,13 @@ function endStream() {
 
 
 $(function() {
+    // Customer requests support
     $('.request-support').click(function(e) {
         e.preventDefault();
         createTicket();
     });
 
+    // Agent initiates call
     $('.connect-call').click(function(e) {
         e.preventDefault();
         customerEndpoint = $(e.currentTarget).data('endpoint');

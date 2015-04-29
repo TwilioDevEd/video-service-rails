@@ -7,11 +7,7 @@ Rails.application.routes.draw do
   get 'support/list'
   delete '/support/:id' => 'support#destroy'
 
-  
-  
-
+  # Product details page
   get '/products/:id', to: 'products#show', as: 'product'
-  post 'call' => 'twilio#call'
-  post 'connect' => 'twilio#connect'
 
 end
