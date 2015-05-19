@@ -560,7 +560,7 @@
 #viewsaurus .saurus-prose .saurus-overview ul li {
   list-style: none;
   margin: 5px;
-  color: #808184;
+  color: #daddd6;
 }
 #viewsaurus .saurus-prose .saurus-overview ul li span {
   display: block;
@@ -854,7 +854,8 @@
   background-color: #231f20;
   color: #daddd6;
   overflow-y: auto;
-  font-size: 14px;
+  overflow-x: hidden;
+  font-size: 14px !important;
 }
 #viewsaurus .saurus-explorer .saurus-file-list .current {
   color: #d1c626;
@@ -871,10 +872,12 @@
   margin: 10px;
   padding: 0;
   color: #daddd6;
+  font-size: 14px !important;
 }
 #viewsaurus .saurus-explorer .saurus-file-list ul li ul li {
   margin-left: 20px;
   color: #daddd6;
+  font-size: 14px !important;
 }
 #viewsaurus .saurus-explorer .saurus-file-list ul li[data-file] {
   cursor: pointer;
