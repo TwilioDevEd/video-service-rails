@@ -6,25 +6,17 @@ function createEndpoint() {
     // Create a deferred object to use jQuery promise
     var deferred = new $.Deferred();
 
-    new Twilio.Endpoint.createWithToken(capabilityToken).then(function(endpoint) {
-        // keep a reference for making outbound calls later
-        myEndpoint = endpoint;
+    myEndpoint = new Twilio.Endpoint(capabilityToken);
+    myEndpoint.on('invite', function(invite) {
 
-        // automatically answer any incoming calls
-        myEndpoint.on('invite', function(invite) {
+        // show the video area and streams
+        $('.video-streams').addClass('active');
 
-            // show the video area and streams
-            $('.video-streams').addClass('active');
+        invite.accept().then(showVideoStreams);
+    });
 
-            invite.accept().then(function(conversation) {
-                showVideoStreams(conversation);
-            });
-        });
-        deferred.resolve(endpoint);
-
-    }, function(error) {
-        console.error('Could not connect to Twilio');
-        console.dir(error);
+    myEndpoint.listen().then(function() {
+        deferred.resolve(myEndpoint);
     });
     return deferred.promise();
 }
@@ -58,21 +50,18 @@ function deleteSupportTicket(ticketId) {
 
 // incoming or outgoing, display streams on screen
 function showVideoStreams(conversation) {
-    // define our video containers
-    var localVideoElement = $('#local-video').get(0);
-    var remoteVideoElement = $('#remote-video').get(0);
+    // Attach to DOM
+    conversation.localMedia.attach('#local-video');
 
-    // create a localStream object to mute and end
-    supportConversation = conversation;
+    // Listen for participants
+    conversation.on('participantConnected', function(participant) {
+        participant.media.attach('#remote-video');
+    });
 
-    // attach our local Stream
-    conversation.localStream.attach(localVideoElement);
-
-    conversation.on('participantJoined', function(participant) {
-        
-        // attach the remote Stream
-        participant.stream.attach(remoteVideoElement);
-    })
+    conversation.on('participantDisconnected', function(participant) {
+        conversation.localMedia.stop();
+        conversation.leave();
+    });
 };
 
 function callCustomer(customerEndpoint, ticketId) {
@@ -96,18 +85,6 @@ function callCustomer(customerEndpoint, ticketId) {
     })
 };
 
-// Mute the local video
-function muteStream() {
-    supportConversation.localStream.muted = !supportConversation.localStream.muted;
-}
-
-// End the video call
-function endStream() {
-    supportConversation.leave();
-    // show the video area and streams
-    $('.video-streams').removeClass('active');
-}
-
 
 $(function() {
     // Customer requests support
@@ -122,16 +99,5 @@ $(function() {
         customerEndpoint = $(e.currentTarget).data('endpoint');
         ticketId = $(e.currentTarget).data('ticket');
         callCustomer(customerEndpoint, ticketId);
-    });
-
-    $('.mute-video').click(function(e) {
-        e.preventDefault();
-        $('.mute-video').toggle();
-        muteStream();
-    });
-
-    $('.end-video').click(function(e) {
-        e.preventDefault();
-        endStream();
     });
 });

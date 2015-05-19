@@ -76,7 +76,7 @@ rails server
 
 3) Open browser to [http://localhost:3000](http://localhost:3000).
 
-4) Tweak away on `app/controllers/twilio_controller.rb`.
+4) Tweak away!
 
 ## Meta 
 
