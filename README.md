@@ -3,19 +3,9 @@
 An example application implementing Video Customer Service using Twilio.  For a
 step-by-step tutorial, [visit this link](https://twilio.com/docs/howto/walkthrough/video-service/).
 
-Deploy this example app to Heroku now!
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TwilioDevEd/video-service-rails)
-
 ## Installation
 
 Step-by-step on how to deploy, configure and develop on this example app.
-
-### Fastest Deploy
-
-Use Heroku to deploy this app immediately:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/TwilioDevEd/video-service-rails)
 
 ### Getting Started 
 
