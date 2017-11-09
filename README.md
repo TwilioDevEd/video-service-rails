@@ -3,38 +3,6 @@
 An example application implementing Video Customer Service using Twilio.  For a
 step-by-step tutorial, [visit this link](https://twilio.com/docs/howto/walkthrough/video-service/).
 
-## Installation
-
-Step-by-step on how to deploy, configure and develop on this example app.
-
-### Getting Started 
-
-1) Grab latest source
-<pre>
-git clone git://github.com/TwilioDevEd/video-service-rails.git 
-</pre>
-
-2) Navigate to folder and create new Heroku Cedar app
-<pre>
-heroku create
-</pre>
-
-3) Deploy to Heroku
-<pre>
-git push heroku master
-</pre>
-
-4) Scale your dynos
-<pre>
-heroku scale web=1
-</pre>
-
-5) Visit the home page of your new Heroku app to see your newly configured app!
-<pre>
-heroku open
-</pre>
-
-
 ### Configuration
 
 #### Setting Your Environment Variables
