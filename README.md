@@ -1,7 +1,6 @@
 # Video Customer Service in Rails
 
-An example application implementing Video Customer Service using Twilio.  For a
-step-by-step tutorial, [visit this link](https://twilio.com/docs/howto/walkthrough/video-service/).
+An example application implementing Video Customer Service using Twilio.
 
 ### Configuration
 
