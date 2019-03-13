@@ -1,3 +1,6 @@
+## Deprecation notice
+This project uses Twilio's the deprecated Conversations SDK. Please check out our current [Getting Started guide for Video](https://www.twilio.com/docs/video/javascript-v2-getting-started) and [accompanying repository](https://github.com/twilio/video-quickstart-js) instead.
+
 # Video Customer Service in Rails
 
 An example application implementing Video Customer Service using Twilio.
